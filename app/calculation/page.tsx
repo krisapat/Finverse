@@ -1,11 +1,29 @@
 import FadeUpWhenVisible from "@/components/animation/FadeUpWhenVisible"
 import { Metadata } from "next"
 import FeatureCard from "@/components/calculation/FeatureCard"
-import { features } from "@/utils/featurescal"
+
 export const metadata: Metadata = {
   title: 'Currensa | DCA Calculators',
   description: 'Access powerful financial tools including DCA investment planning, currency conversion, and dividend calculators — all in one place to support smarter investing decisions.',
 }
+const features = [
+  {
+    title: "Calculate DCA Investment",
+    description: "Calculate the results of DCA investments",
+    link: "/calculation/dca",
+  },
+  {
+    title: "Currency Conversion",
+    description: "Convert currencies in real time",
+    link: "/calculation/conversion",
+  },
+  {
+    title: "Calculate Dividends",
+    description:
+      "Enter the investment amount and percentage of dividends. The system will calculate the dividends",
+    link: "/calculation/dividends",
+  },
+];
 
 const calculation = () => {
   return (
