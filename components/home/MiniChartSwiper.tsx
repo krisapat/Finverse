@@ -8,16 +8,17 @@ import { Button } from '@/components/ui/button'
 import { stockItems } from '@/utils/stockItemslist'
 import MiniChart from '../minichart/MiniChart'
 
+import { Swiper as SwiperClass } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 
 export default function RecommendedStocks() {
-  const prevRef = useRef(null)
-  const nextRef = useRef(null)
+  const prevRef = useRef<HTMLButtonElement>(null)
+  const nextRef = useRef<HTMLButtonElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [visibleIndexes, setVisibleIndexes] = useState([0])
 
-  const handleSlideChange = (swiper: any) => {
+  const handleSlideChange = (swiper: SwiperClass) => {
     const current = swiper.realIndex
     setActiveIndex(current)
     if (!visibleIndexes.includes(current)) {
@@ -49,20 +50,19 @@ export default function RecommendedStocks() {
       <Swiper
         modules={[Autoplay, Navigation]}
         autoplay={{ delay: 4500, disableOnInteraction: false }}
-        navigation={{
-          prevEl: prevRef.current!,
-          nextEl: nextRef.current!,
-        }}
+        loop
+        spaceBetween={30}
+        slidesPerView={1}
         onBeforeInit={(swiper) => {
-          if (swiper.params.navigation && typeof swiper.params.navigation !== 'boolean') {
+          if (
+            swiper.params.navigation &&
+            typeof swiper.params.navigation !== 'boolean'
+          ) {
             swiper.params.navigation.prevEl = prevRef.current
             swiper.params.navigation.nextEl = nextRef.current
           }
         }}
         onSlideChange={handleSlideChange}
-        loop
-        spaceBetween={30}
-        slidesPerView={1}
       >
         {stockItems.map((item, index) => (
           <SwiperSlide key={index}>
@@ -77,7 +77,6 @@ export default function RecommendedStocks() {
                   </h1>
                 </div>
               </div>
-
             </div>
           </SwiperSlide>
         ))}
@@ -88,10 +87,9 @@ export default function RecommendedStocks() {
         {stockItems.map((_, idx) => (
           <div
             key={idx}
-            className={`h-2.5 rounded-full transition-all duration-300 ${activeIndex === idx
-                ? 'w-6 bg-white'
-                : 'w-2.5 bg-white/30'
-              }`}
+            className={`h-2.5 rounded-full transition-all duration-300 ${
+              activeIndex === idx ? 'w-6 bg-white' : 'w-2.5 bg-white/30'
+            }`}
           />
         ))}
       </div>

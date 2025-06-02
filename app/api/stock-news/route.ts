@@ -33,19 +33,27 @@ export async function GET(request: Request) {
 
     const data = await res.json()
 
-    // Transform and map raw API data to frontend-friendly format
-    const articles = (data.data || []).slice(0, 10).map((item: any) => ({
+    interface NewsItem {
+      title?: string
+      url?: string
+      published_at?: string
+      description?: string
+      source?: string
+    }
+
+    const articles = (data.data || []).slice(0, 10).map((item: NewsItem) => ({
       title: item.title || 'No title available',
       url: item.url || '#',
       date: item.published_at
         ? new Date(item.published_at).toLocaleString('th-TH', {
-            dateStyle: 'short',
-            timeStyle: 'short',
-          })
+          dateStyle: 'short',
+          timeStyle: 'short',
+        })
         : 'No date available',
       description: item.description || 'No description available',
       source: item.source || 'Unknown',
     }))
+
 
     // Store the result in cache for 10 minutes
     stockNewsCache.set(symbol, articles)

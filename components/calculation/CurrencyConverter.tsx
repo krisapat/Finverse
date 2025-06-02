@@ -57,19 +57,27 @@ export default function CurrencyConverter() {
             const now = Date.now();
             const oneHour = 60 * 60 * 1000;
 
-            if (cachedRates && cachedChartData && cachedTimestamp && (now - parseInt(cachedTimestamp)) < oneHour) {
-                setRate(JSON.parse(cachedRates));
+            if (
+                cachedRates &&
+                cachedChartData &&
+                cachedTimestamp &&
+                now - parseInt(cachedTimestamp) < oneHour
+            ) {
+                const parsedRate = JSON.parse(cachedRates);
+                setRate(parsedRate);
                 setChartData(JSON.parse(cachedChartData));
-                setConverted(Number(amount) * JSON.parse(cachedRates));
+                setConverted(Number(amount) * parsedRate);
                 setLoading(false);
                 return;
             }
 
-            const rateRes = await fetch(`https://api.frankfurter.app/latest?from=${fromCurrency}&to=${toCurrency}`);
+            const rateRes = await fetch(
+                `https://api.frankfurter.app/latest?from=${fromCurrency}&to=${toCurrency}`
+            );
             const rateData = await rateRes.json();
-            console.log('Rate data:', rateData);
+            console.log("Rate data:", rateData);
 
-            if (rateData && rateData.rates && rateData.rates[toCurrency] !== undefined) {
+            if (rateData?.rates?.[toCurrency] !== undefined) {
                 const newRate = rateData.rates[toCurrency];
                 setRate(newRate);
                 setConverted(Number(amount) * newRate);
@@ -80,35 +88,42 @@ export default function CurrencyConverter() {
                 setConverted(0);
             }
 
-            const endDate = new Date().toISOString().split('T')[0];
+            const endDate = new Date().toISOString().split("T")[0];
             const start = new Date();
             start.setFullYear(start.getFullYear() - 1);
-            const startDate = start.toISOString().split('T')[0];
+            const startDate = start.toISOString().split("T")[0];
 
             const historyRes = await fetch(
                 `https://api.frankfurter.app/${startDate}..${endDate}?from=${fromCurrency}&to=${toCurrency}`
             );
-            const historyData = await historyRes.json();
-            console.log('History data:', historyData);
+            const historyData: {
+                rates: Record<string, Record<string, number>>;
+            } = await historyRes.json();
 
             if (historyData && historyData.rates) {
-                const chartFormatted = Object.entries(historyData.rates)
-                    .map(([date, value]: [string, any]) => ({
+                const chartFormatted = Object.entries(historyData.rates).map(
+                    ([date, value]: [string, Record<string, number>]) => ({
                         month: date,
                         value: value[toCurrency],
-                    }));
+                    })
+                );
 
                 setChartData(chartFormatted);
-                localStorage.setItem(`chart-${fromCurrency}-${toCurrency}`, JSON.stringify(chartFormatted));
+                localStorage.setItem(
+                    `chart-${fromCurrency}-${toCurrency}`,
+                    JSON.stringify(chartFormatted)
+                );
             } else {
-                console.error(`❌ Cannot load history data for ${fromCurrency} to ${toCurrency}`, historyData);
+                console.error(
+                    `❌ Cannot load history data for ${fromCurrency} to ${toCurrency}`,
+                    historyData
+                );
                 setChartData([]);
             }
 
-            localStorage.setItem('cacheTimestamp', now.toString());
-
+            localStorage.setItem("cacheTimestamp", now.toString());
         } catch (e) {
-            console.error('Conversion error:', e);
+            console.error("Conversion error:", e);
             setRate(null);
             setConverted(0);
             setChartData([]);
@@ -116,6 +131,7 @@ export default function CurrencyConverter() {
 
         setLoading(false);
     };
+
 
     useEffect(() => {
         if (amount === '' || isNaN(Number(amount))) return;
