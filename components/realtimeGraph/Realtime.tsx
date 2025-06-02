@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import MiniChart from '@/components/minichart/MiniChart'
-import { quicksand } from '@/utils/font'
+
 import StockFilter, { Category } from '@/components/realtimeGraph/StockFilter'
 import { stockSymbols } from '@/utils/stockSymbols'
 import Link from 'next/link'
@@ -38,7 +38,7 @@ export default function StockGrid() {
               backdrop-blur-lg"
           >
             <h1
-              className={`${quicksand.className} text-lg mb-2 text-center font-semibold`}
+              className="text-lg mb-2 text-center font-semibold"
             >
               {stock.id}
             </h1>
@@ -55,7 +55,7 @@ export default function StockGrid() {
                 <Link
                   href={`/Real-time_graph/stocks/${stock.id}`}
                   passHref
-                  className={`${quicksand.className} text-lg text-center font-semibold`}
+                  className="text-lg text-center font-semibold"
                 >
                   More details
                 </Link>

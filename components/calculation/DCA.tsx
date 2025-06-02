@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Undo2 } from 'lucide-react'
+import { AnimatedNumber } from '../animation/AnimatedNumber'
 interface ChartPoint {
     month: number
     value: number
@@ -53,7 +54,7 @@ export default function DCA() {
             </div>
 
             <div className="relative w-[90vw] max-w-3xl mx-auto space-y-8 p-8 border-white/20 shadow-md backdrop-blur-lg rounded-xl
-                      bg-white/50 dark:bg-white/10 z-10">
+                      bg-white dark:bg-[#272727] z-10">
                 <div className='flex justify-between items-center space-x-4 mx-auto'>
                     <h1 className="text-3xl font-bold">DCA Investment Calculator</h1>
                     <Button asChild className='bg-white dark:bg-black/30'>
@@ -122,21 +123,44 @@ export default function DCA() {
                             <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center text-base">
                                 <div>
                                     <div className="text-sm text-gray-500">Final Value</div>
-                                    <div className="text-lg font-bold text-green-600">
-                                        ฿{finalValue.toLocaleString()}
-                                    </div>
+                                    <AnimatedNumber
+                                        value={finalValue}
+                                        format={(val) =>
+                                            `฿${val.toLocaleString("th-TH", {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2,
+                                            })}`
+                                        }
+                                        className="text-lg font-bold text-green-600"
+                                    />
                                 </div>
+
                                 <div>
                                     <div className="text-sm text-gray-500">Total Invested</div>
-                                    <div className="text-lg font-bold text-green-600">
-                                        ฿{totalInvested.toLocaleString()}
-                                    </div>
+                                    <AnimatedNumber
+                                        value={totalInvested}
+                                        format={(val) =>
+                                            `฿${val.toLocaleString("th-TH", {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2,
+                                            })}`
+                                        }
+                                        className="text-lg font-bold text-green-600"
+                                    />
                                 </div>
+
                                 <div>
                                     <div className="text-sm text-gray-500">Total Gain</div>
-                                    <div className="text-lg font-bold text-green-600">
-                                        ฿{totalGain.toLocaleString()}
-                                    </div>
+                                    <AnimatedNumber
+                                        value={totalGain}
+                                        format={(val) =>
+                                            `฿${val.toLocaleString("th-TH", {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2,
+                                            })}`
+                                        }
+                                        className="text-lg font-bold text-green-600"
+                                    />
                                 </div>
                             </div>
                         </CardContent>

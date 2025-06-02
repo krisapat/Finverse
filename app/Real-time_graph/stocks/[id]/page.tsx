@@ -4,7 +4,6 @@ import StockNews from '@/components/realtimeGraph/StockNews'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Undo2 } from 'lucide-react'
-import { quicksand } from '@/utils/font'
 import { Metadata } from 'next'
 export interface PageProps {
   params: Promise<{ id: string }>
@@ -40,7 +39,7 @@ export default async function StockDetail({ params }: PageProps) {
   return (
     <div className="h-screen pt-20 px-4">
       <div className="flex space-x-4 my-4">
-        <h1 className={`${quicksand.className} text-2xl font-bold`}>{stock.id}</h1>
+        <h1 className="text-2xl font-bold">{stock.id}</h1>
         <Button className="bg-white dark:bg-black/30">
           <Link href="/Real-time_graph">
             <Undo2 className="text-black dark:text-white" />

@@ -6,30 +6,33 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { Undo2 } from "lucide-react";
+import { AnimatedNumber } from "../animation/AnimatedNumber";
 
 export default function DividendCalculator() {
-    const [monthlyDividend, setMonthlyDividend] = useState<string>("");
+    const [principalInvestment, setPrincipalInvestment] = useState<string>("");
     const [annualReturnPercent, setAnnualReturnPercent] = useState<string>("");
-    const [requiredInvestment, setRequiredInvestment] = useState<number | null>(null);
+    const [annualDividend, setAnnualDividend] = useState<number | null>(null);
+    const [monthlyDividend, setMonthlyDividend] = useState<number | null>(null);
 
     const isValid = () => {
-        const monthly = parseFloat(monthlyDividend);
+        const principal = parseFloat(principalInvestment);
         const percent = parseFloat(annualReturnPercent);
-        return !isNaN(monthly) && monthly > 0 && !isNaN(percent) && percent > 0;
+        return !isNaN(principal) && principal > 0 && !isNaN(percent) && percent > 0;
     };
 
     useEffect(() => {
         if (isValid()) {
-            const monthly = parseFloat(monthlyDividend);
+            const principal = parseFloat(principalInvestment);
             const percent = parseFloat(annualReturnPercent);
-            const annualDividend = monthly * 12;
-            const required = annualDividend / (percent / 100);
-            setRequiredInvestment(required);
+            const annual = principal * (percent / 100);
+            const monthly = annual / 12;
+            setAnnualDividend(annual);
+            setMonthlyDividend(monthly);
         } else {
-            setRequiredInvestment(null);
+            setAnnualDividend(null);
+            setMonthlyDividend(null);
         }
-    }, [monthlyDividend, annualReturnPercent]);
-
+    }, [principalInvestment, annualReturnPercent]);
 
     return (
         <div className="relative flex justify-center items-center min-h-[80vh] overflow-hidden pt-28">
@@ -37,7 +40,7 @@ export default function DividendCalculator() {
                 <div className="absolute inset-0 bg-gradient-to-b from-black/1 via-white/70 to-transparent dark:from-white/10 dark:via-[#0c0c0c]/50 dark:to-transparent" />
             </div>
             <div className="relative w-[90vw] max-w-3xl mx-auto space-y-8 p-8 border-white/20 shadow-md backdrop-blur-lg rounded-xl
-                      bg-white/50 dark:bg-white/10 z-10">
+                      bg-white dark:bg-[#272727] z-10">
                 <div className="flex justify-between items-center space-x-4 mx-auto">
                     <h1 className="text-3xl font-bold">Dividend calculator</h1>
                     <Button asChild className="bg-white dark:bg-black/30">
@@ -50,11 +53,11 @@ export default function DividendCalculator() {
                 <div className="space-y-4">
                     <div>
                         <Input
-                            id="monthly-dividend"
+                            id="principal-investment"
                             type="number"
-                            value={monthlyDividend}
-                            onChange={(e) => setMonthlyDividend(e.target.value)}
-                            placeholder="Monthly income desired (baht)"
+                            value={principalInvestment}
+                            onChange={(e) => setPrincipalInvestment(e.target.value)}
+                            placeholder="Investment amount (baht)"
                         />
                     </div>
 
@@ -68,22 +71,41 @@ export default function DividendCalculator() {
                         />
                     </div>
                 </div>
+
                 <Card>
                     <CardContent className="p-6 text-center space-y-2">
                         {isValid() ? (
                             <>
-                                <p className="text-sm text-muted-foreground">You will need to invest approximately</p>
-                                <p className="text-2xl font-semibold text-green-600">
-                                    {requiredInvestment?.toLocaleString("th-TH", {
-                                        style: "currency",
-                                        currency: "THB",
-                                    })}
-                                </p>
+                                <p className="text-sm text-muted-foreground">Estimated annual dividend:</p>
+                                <AnimatedNumber
+                                    value={annualDividend ?? 0}
+                                    format={(val) =>
+                                        val.toLocaleString("th-TH", {
+                                            style: "currency",
+                                            currency: "THB",
+                                        })
+                                    }
+                                    className="text-2xl font-semibold text-green-600"
+                                />
+
+                                <p className="text-sm text-muted-foreground">Which is about</p>
+                                <AnimatedNumber
+                                    value={monthlyDividend ?? 0}
+                                    format={(val) =>
+                                        val.toLocaleString("th-TH", {
+                                            style: "currency",
+                                            currency: "THB",
+                                        })
+                                    }
+                                    className="text-xl font-medium text-blue-600"
+                                />
+                                <p className="text-sm text-muted-foreground">/ month</p>
                             </>
                         ) : (
-                            <p className="text-lg  font-medium">Waiting for information 😉</p>
+                            <p className="text-lg font-medium">Waiting for information 😉</p>
                         )}
                     </CardContent>
+
                 </Card>
             </div>
         </div>

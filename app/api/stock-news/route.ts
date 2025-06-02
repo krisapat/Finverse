@@ -1,56 +1,59 @@
 import { NextResponse } from 'next/server'
-import { parseStringPromise } from 'xml2js'
 import NodeCache from 'node-cache'
 
+// Cache instance with 10 minutes TTL to avoid excessive API calls
 const stockNewsCache = new NodeCache({ stdTTL: 600 })
 
-interface RSSItem {
-  title?: string[];
-  link?: string[];
-  pubDate?: string[];
-  description?: string[];
-}
+// Get API key from environment variable
+const API_KEY = process.env.MARKETAUX_API_KEY
+
+// Marketaux base API endpoint
+const BASE_URL = 'https://api.marketaux.com/v1/news/all'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
-  const symbol = searchParams.get('symbol') || 'AAPL'
+  const symbol = searchParams.get('symbol') || 'AAPL' // Default to AAPL if no symbol is provided
 
+  // Check if the result is cached to avoid hitting the API unnecessarily
   const cachedData = stockNewsCache.get(symbol)
   if (cachedData) {
     return NextResponse.json({ articles: cachedData })
   }
 
   try {
-    const rssUrl = `https://feeds.finance.yahoo.com/rss/2.0/headline?s=${symbol}&region=US&lang=en-US`
-    const res = await fetch(rssUrl)
+    // Construct API URL with query parameters
+    const url = `${BASE_URL}?symbols=${symbol}&language=en&filter_entities=true&api_token=${API_KEY}`
+    const res = await fetch(url)
 
     if (!res.ok) {
-      console.error(`Yahoo RSS error: ${res.status} ${res.statusText}`)
+      // Log error if the API response is not OK
+      console.error(`Marketaux error: ${res.status} ${res.statusText}`)
       return NextResponse.json({ articles: [] }, { status: 200 })
     }
 
-    const xml = await res.text()
-    const parsed = await parseStringPromise(xml, { trim: true })
+    const data = await res.json()
 
-    const items: RSSItem[] = parsed?.rss?.channel?.[0]?.item ?? []
-
-    const articles = items.slice(0, 10).map((item) => ({
-      title: item.title?.[0] ?? 'No title available',
-      url: item.link?.[0] ?? '#',
-      date: item.pubDate
-        ? new Date(item.pubDate[0]).toLocaleString('th-TH', {
+    // Transform and map raw API data to frontend-friendly format
+    const articles = (data.data || []).slice(0, 10).map((item: any) => ({
+      title: item.title || 'No title available',
+      url: item.url || '#',
+      date: item.published_at
+        ? new Date(item.published_at).toLocaleString('th-TH', {
             dateStyle: 'short',
             timeStyle: 'short',
           })
         : 'No date available',
-      description: item.description?.[0] ?? 'No description available',
+      description: item.description || 'No description available',
+      source: item.source || 'Unknown',
     }))
 
+    // Store the result in cache for 10 minutes
     stockNewsCache.set(symbol, articles)
 
     return NextResponse.json({ articles })
   } catch (error) {
-    console.error('Unexpected error fetching Yahoo RSS:', error)
+    // Log any unexpected errors (e.g. network, JSON parsing)
+    console.error('Unexpected error fetching Marketaux:', error)
     return NextResponse.json(
       { articles: [], error: 'An error occurred while fetching the news.' },
       { status: 500 }

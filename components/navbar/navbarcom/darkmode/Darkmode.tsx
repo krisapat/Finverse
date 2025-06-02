@@ -1,34 +1,32 @@
 'use client'
 
 import * as React from "react"
-import { Moon, Sun, Laptop } from "lucide-react"
+import { Moon, Sun, Monitor, X, } from "lucide-react"
 import { useTheme } from "next-themes"
-
+import { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu"
 
 export function ModeToggle() {
-  const { setTheme, theme, resolvedTheme } = useTheme()
+  const { setTheme, theme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   React.useEffect(() => {
     setMounted(true)
   }, [])
 
-  if (!mounted) return null // ป้องกัน hydration mismatch
-
+  if (!mounted) return null
   const getCurrentIcon = () => {
     if (theme === "system") {
-      return resolvedTheme === "dark" ? (
-        <Moon className="h-[1.2rem] w-[1.2rem]" />
-      ) : (
-        <Sun className="h-[1.2rem] w-[1.2rem]" />
-      )
+      return <Monitor className="h-[1.2rem] w-[1.2rem]" />
     }
     if (theme === "dark") {
       return <Moon className="h-[1.2rem] w-[1.2rem]" />
@@ -37,14 +35,22 @@ export function ModeToggle() {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={(open) => setOpen(open)}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          {getCurrentIcon()}
-          <span className="sr-only">Toggle theme</span>
+        <Button variant="outline" size="icon" className="transition-transform duration-300">
+          {open ? (
+            <X className="transition-all duration-300 rotate-90" />
+          ) : (
+            <>
+              {getCurrentIcon()}
+              <span className="sr-only">Toggle theme</span>
+            </>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Theme</DropdownMenuLabel>
+        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => setTheme("light")}>
           <Sun className="mr-2 h-4 w-4" />
           Light
@@ -54,7 +60,7 @@ export function ModeToggle() {
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
-          <Laptop className="mr-2 h-4 w-4" />
+          <Monitor className="mr-2 h-4 w-4" />
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

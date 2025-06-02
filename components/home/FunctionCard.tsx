@@ -8,7 +8,7 @@ interface FunctionCardProps {
 }
 
 export const FunctionCard: React.FC<FunctionCardProps> = ({ title, content, link }) => (
-  <div className="relative min-h-[300px] bg-white/50 dark:bg-white/10 p-8 rounded-xl border border-white/20 shadow-md backdrop-blur-lg">
+  <div className="relative min-h-[300px] bg-white dark:bg-[#272727] p-8 rounded-xl border border-white/20 shadow-md backdrop-blur-lg">
     <h3 className="text-2xl font-semibold mb-4">{title}</h3>
     <ul className="list-disc list-inside space-y-2 text-left">
       {content.map((item, i) => (

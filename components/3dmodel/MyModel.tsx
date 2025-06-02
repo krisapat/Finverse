@@ -1,6 +1,5 @@
 import { useGLTF } from '@react-three/drei'
-import { useRef, useEffect, useState, useMemo } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useRef, useEffect, useMemo, useState } from 'react'
 import * as THREE from 'three'
 import { Group, Vector3 } from 'three'
 
@@ -15,39 +14,41 @@ export default function MyModel(props: React.ComponentProps<'group'>) {
   const { scene } = useGLTF(MODEL_PATH) as GLTFResult
   const [scaleArray, setScaleArray] = useState<[number, number, number]>([0.05, 0.05, 0.05])
   const scale = useMemo(() => new Vector3(...scaleArray), [scaleArray])
-  const modelRef = useRef<THREE.Object3D>(null)
-  useFrame(() => {
-    if (modelRef.current) {
-      modelRef.current.rotation.y += 0.01
-    }
-  })
 
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth
-      if (width < 768) {
-        setScaleArray([0.03, 0.03, 0.03])
-      } else if (width < 1024) {
-        setScaleArray([0.04, 0.04, 0.04])
-      } else {
-        setScaleArray([0.05, 0.05, 0.05])
-      }
+      const size: [number, number, number] = width < 1024 ? [0.04, 0.04, 0.04] : [0.04, 0.04, 0.04]
+      setScaleArray(size)
     }
-
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+
+  useEffect(() => {
+    scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh
+        const material = mesh.material as THREE.MeshStandardMaterial
+        if (material) {
+          material.envMapIntensity = 5
+          material.needsUpdate = true
+        }
+      }
+    })
+  }, [scene])
+
   return (
     <group
       ref={group}
       scale={scale}
-      position={[0, 0, 0]}
-      rotation={[0, 0, 0]} // ให้เริ่มหันตรง
+      position={[0, 1, 0]}
+      rotation={[0, 0, 0]}
       {...props}
     >
-      <primitive object={scene} ref={modelRef} />
+      <primitive object={scene} />
     </group>
   )
 }

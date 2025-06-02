@@ -1,7 +1,6 @@
 import "./globals.css";
 import { ThemeProvider } from "@/components/navbar/navbarcom/darkmode/theme-provider";
 import Navbar from "@/components/navbar/Navbar";
-import { quicksand } from "@/utils/font";
 
 export default function RootLayout({
   children,
@@ -10,7 +9,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${quicksand.className} bg-white dark:bg-[#0c0c0c]`}>
+      <body className="quicksand-quicksand bg-white dark:bg-[#0c0c0c]">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
