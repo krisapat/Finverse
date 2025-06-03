@@ -67,7 +67,8 @@ MarketAux API is an API for fetching stock news or various assets.
 
 ## Support
 
-If you need help setting up your project or customizing it to suit your needs, please contact us through the Support tab on CodeCanyon or email us at pluemkrisapat@gmail.com.
+For support or customization requests, please use the **CodeCanyon support tab**.  
+This helps us track and respond to issues more efficiently.
 
 ---
 
