@@ -15,7 +15,6 @@ const MiniChart = ({
   useEffect(() => {
     if (!containerRef.current || !resolvedTheme) return
 
-    // ล้าง container ก่อน
     containerRef.current.innerHTML = ''
 
     const script = document.createElement('script')

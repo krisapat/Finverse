@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💹 Currensa – Currency Converter, Stock Tracker, DCA & Dividend Calculator Web App
 
-## Getting Started
+**Currensa** is a modern and elegant financial dashboard built with **Next.js**, **TypeScript**, and **Tailwind CSS**. It provides real-time currency conversion, live stock and asset prices, as well as powerful tools like **DCA (Dollar Cost Averaging)** and **Dividend Calculators**, all in one responsive and beautifully designed interface.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 💱 Real-time currency exchange with instant conversion
+- 📈 Live stock, cryptocurrency, and asset prices (via MarketAux API)
+- 📊 Dollar Cost Averaging (DCA) calculator
+- 💸 Dividend calculator to project passive income
+- 🎨 Fully responsive and modern UI built with Tailwind CSS
+- ⚙️ Built using Next.js and TypeScript for scalability and performance
+- 🌐 SEO-optimized and ready to deploy (e.g., on Vercel)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔗 Live Demo
 
-## Learn More
+👉 [View Live Demo](https://currensa.vercel.app/)
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Built With
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Next.js  
+- TypeScript  
+- Tailwind CSS  
+- MarketAux API
+- Frankfurter API
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## APIs Used
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **MarketAux API**  
+  For fetching live stock, crypto, and asset prices, as well as news.
+
+- **Frankfurter API**  
+  Used for real-time currency exchange rates and conversion.  
+  Example endpoint:  
+  `https://api.frankfurter.app/latest?from={fromCurrency}&to={toCurrency}`
+
+---
+
+## Set up environment variables
+
+Create a '.env.local' file in the root directory and add your 
+
+MarketAux API key
+MARKETAUX_API_KEY=your_marketaux_api_key
+
+MarketAux API is an API for fetching stock news or various assets.
+
+---
+
+## How to Get a MarketAux API Key
+
+1.Go to https://marketaux.com
+2.Sign up for a free or paid account
+3.Access your Dashboard
+4.Copy your API Key
+5.Paste it into your .env.local file
+
+---
+
+## Support
+
+If you need help setting up your project or customizing it to suit your needs, please contact us through the Support tab on CodeCanyon or email us at pluemkrisapat@gmail.com.
+
+---
+
+## License
+
+This project is licensed under the Envato Regular or Extended License.
+Please review the license terms here: https://codecanyon.net/licenses
+
+---

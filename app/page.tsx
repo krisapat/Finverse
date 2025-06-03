@@ -1,9 +1,7 @@
-
 import FadeUpWhenVisible from "@/components/animation/FadeUpWhenVisible"
 import MiniChartSwiper from "@/components/home/MiniChartSwiper"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-
 import { LineChart, Calculator } from 'lucide-react';
 import { Metadata } from "next"
 import { FeatureCard } from "@/components/home/FeatureCard"
@@ -52,7 +50,7 @@ const page = () => {
       </section>
 
       {/* FEATURE CARDS */}
-      <section className="w-[95vw] mx-auto mt-20 py-12 px-6 rounded-xl backdrop-blur-md bg-white dark:bg-[#272727] border border-white/20 shadow-lg">
+      <section className="w-[95vw] mx-auto mt-20 py-12 px-6 rounded-xl backdrop-blur-md bg-white/20 dark:bg-white/5 border border-white/20 shadow-lg">
         <FadeUpWhenVisible>
           <h2 className="text-3xl font-semibold text-center mb-12">What can we do?</h2>
         </FadeUpWhenVisible>
@@ -108,15 +106,18 @@ const page = () => {
       </section>
 
       {/* RECOMMENDED STOCKS */}
-      <section className="w-full px-6 py-20 bg-gradient-to-t from-white/20 to-transparent dark:from-white/5">
-        <div className="w-full h-auto bg-white/50 dark:bg-white/10 p-8 rounded-xl border border-white/20 shadow-md backdrop-blur-lg">
-          <h2 className="text-3xl font-semibold text-center ">Popular Stocks</h2>
-          <div className="max-w-5xl mx-auto">
-            <MiniChartSwiper />
-          </div>
-        </div>
+      <section className="w-[90%] m-10 mx-auto">
+  <div className="max-w-6xl mx-auto backdrop-blur-md bg-white/20 dark:bg-white/5 border border-white/20 shadow-xl rounded-xl p-8">
+    <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-3">
+      📈 Popular Stocks
+    </h2>
 
-      </section>
+    <div className="w-full">
+      <MiniChartSwiper />
+    </div>
+  </div>
+</section>
+
     </div>
 
   )
