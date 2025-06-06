@@ -6,7 +6,6 @@ import { LineChart, Calculator } from 'lucide-react';
 import { Metadata } from "next"
 import { FeatureCard } from "@/components/home/FeatureCard"
 import { FunctionCard } from "@/components/home/FunctionCard"
-import UseModel from "@/components/3dmodel/UseModel";
 import { ScrollAnimatedCard } from "@/components/animation/ScrollAnimatedCard";
 import AnimatedText from "@/components/animation/SplitTextWrapper";
 export const metadata: Metadata = {
@@ -20,9 +19,6 @@ const page = () => {
       {/* HERO SECTION */}
       <section className="relative flex justify-center items-center min-h-screen overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <FadeUpWhenVisible>
-            <UseModel />
-          </FadeUpWhenVisible>
           <div className="absolute inset-0 bg-gradient-to-b from-black/1 via-white/70 to-transparent dark:from-white/10 dark:via-[#0c0c0c]/50 dark:to-transparent" />
         </div>
 
